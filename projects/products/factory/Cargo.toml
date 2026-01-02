@@ -13,3 +13,14 @@ bincode = "2.0.1"
 uuid = { version = "1", features = ["v7", "serde"] }
 chrono = { version = "0.4", features = ["serde"] }
 rayon = "1.10"
+
+[patch.crates-io]
+bincode_derive = "2.0.1"
+virtue = "0.0.18"
+unty = "0.0.4"
+proc-macro2 = "1.0.104"
+quote = "1.0.42"
+syn = "2.0.112"
+serde = "1.0.228"
+serde_derive = "1.0.228"
+unicode-ident = "1.0.22"
