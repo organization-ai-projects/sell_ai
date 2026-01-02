@@ -78,7 +78,7 @@ jobs:
           components: clippy
 
       - name: Install latest stable Rust
-        run: rustup update stable
+        run: rustup install stable && rustup default stable
 
       - name: Setup Rust cache
         uses: Swatinem/rust-cache@v2
