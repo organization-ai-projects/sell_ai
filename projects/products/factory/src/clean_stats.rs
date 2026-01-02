@@ -60,3 +60,9 @@ impl std::fmt::Display for CleanStats {
         )
     }
 }
+
+impl Default for CleanStats {
+    fn default() -> Self {
+        Self::new()
+    }
+}
