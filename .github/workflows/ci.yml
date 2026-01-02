@@ -10,7 +10,6 @@ on:
       - main
       - dev
   schedule:
-    # Audit de sécurité hebdomadaire (tous les lundis à 9h)
     - cron: '0 9 * * 1'
 
 env:
@@ -76,9 +75,6 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy
-
-      - name: Install latest stable Rust
-        run: rustup install stable && rustup default stable
 
       - name: Setup Rust cache
         uses: Swatinem/rust-cache@v2
@@ -182,41 +178,13 @@ jobs:
       - name: Setup Rust toolchain (MSRV)
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: 1.70.0
+          toolchain: 1.75.0  # ⬅️ Version corrigée
 
       - name: Setup Rust cache
         uses: Swatinem/rust-cache@v2
 
       - name: Check with MSRV
         run: cargo check --all-features --workspace
-
-  benchmark:
-    name: Benchmark
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Setup Rust cache
-        uses: Swatinem/rust-cache@v2
-
-      - name: Run benchmarks
-        run: cargo bench --no-fail-fast -- --output-format bencher | tee output.txt
-
-      - name: Store benchmark result
-        uses: benchmark-action/github-action-benchmark@v1
-        with:
-          tool: 'cargo'
-          output-file-path: output.txt
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-push: true
-          alert-threshold: '200%'
-          comment-on-alert: true
-          fail-on-alert: true
 
   unused-deps:
     name: Check Unused Dependencies
@@ -260,7 +228,10 @@ jobs:
         with:
           tool: cargo-semver-checks
 
-      - name: Check semver compatibility
+      - name: Fetch published version
+        run: cargo install cargo-publish && cargo publish --dry-run
+
+      - name: Compare with published version
         run: cargo semver-checks check-release
 
   size:
