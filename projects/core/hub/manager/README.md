@@ -13,31 +13,31 @@ Le **Hub Manager** est le composant central du Hub System. C'est le **seul proce
 
 ### Lancement des services
 
-```
+```plaintext
 Hub Manager
 ├── Lance hub_registry sur port 8081
 ├── Lance hub_router sur port 8082
-└── Vérifie qu'ils répondent aux health checks
+└── Vérifie qu'ils répondent aux vérifications de santé
 ```
 
 ### Supervision continue
 
-```
+```plaintext
 Hub Manager (boucle)
-├── Check health du Registry toutes les 5s
-├── Check health du Router toutes les 5s
-├── Redémarre si un service crash
-└── Logs les incidents
+├── Vérifie la santé du Registry toutes les 5s
+├── Vérifie la santé du Router toutes les 5s
+├── Redémarre si un service plante
+└── Consigne les incidents dans les journaux
 ```
 
 ### API Gateway
 
 Expose une API HTTP unique sur le port **8080** :
 
-- `GET /health` - Health check du Manager
-- `GET /status` - État complet du hub (Manager + Registry + Router)
-- `POST /command` - Recevoir une commande client
-- `POST /register` - Enregistrer un produit externe
+- `GET /health` : Vérification de santé du Manager
+- `GET /status` : État complet du hub (Manager + Registry + Router)
+- `POST /command` : Recevoir une commande client
+- `POST /register` : Enregistrer un produit externe
 
 ## 🚀 Démarrage
 
@@ -55,7 +55,7 @@ cargo run --release
 
 ## 📊 Architecture
 
-```
+```plaintext
 ┌──────────────────────────────────────┐
 │   Hub Manager (Port 8080)            │
 │                                      │
@@ -83,10 +83,10 @@ cargo run --release
 
 ```rust
 // Détecte les binaires compilés et les lance
-// Avec retry et vérification de santé (timeout 10s)
+// Avec réessai et vérification de santé (délai d'attente de 10 secondes)
 ```
 
-### 2. Health checks asynchrones
+### 2. Vérifications de santé asynchrones
 
 ```rust
 // Polling toutes les 5 secondes
@@ -97,10 +97,10 @@ cargo run --release
 ### 3. Supervision continue
 
 ```rust
-// Boucle async qui monitor les services
-// Détecte les crashs
+// Boucle async qui surveille les services
+// Détecte les plantages
 // Redémarre automatiquement
-// Log les incidents
+// Consigne les incidents dans les journaux
 ```
 
 ### 4. API d'état
@@ -112,14 +112,14 @@ curl http://localhost:8080/status
 
 ## 🧪 Tests
 
-### Health check local
+### Vérification de santé locale
 
 ```bash
 curl http://localhost:8080/health
 # {"status":"ok"}
 ```
 
-### Status complet
+### État complet
 
 ```bash
 curl http://localhost:8080/status
@@ -150,8 +150,8 @@ lsof -i:8082
 ### Hub Manager stateless
 
 - ✅ Pas de donnée critique
-- ✅ Peut crasher et redémarrer
-- ✅ Pas de persistence
+- ✅ Peut planter et redémarrer
+- ✅ Pas de persistance
 
 ### Seul point connu de tous
 
@@ -162,14 +162,14 @@ lsof -i:8082
 
 ### Pas de communication directe
 
-```
+```plaintext
 ❌ Registry ←→ Router
 ✅ Registry ←→ Manager ←→ Router
 ```
 
 ## 📈 Flux typique
 
-```
+```plaintext
 1. Client → Manager:8080/command
 2. Manager → Router:8082/route (où router ?)
 3. Router → Manager (URL du handler ou lookup needed)
@@ -227,14 +227,14 @@ struct HubManager {
 
 ## 🚨 Gestion des erreurs
 
-### Processus qui crash
+### Processus qui plante
 
-```
-Manager détecte : GET /health timeout ou erreur
-→ Market service comme "unhealthy"
+```plaintext
+Manager détecte : GET /health délai d'attente ou erreur
+→ Marque le service comme "unhealthy"
 → Tue le processus enfant
 → Redémarre le binaire
-→ Vérifie avec health checks
+→ Vérifie avec des vérifications de santé
 ```
 
 ### Ctrl+C gracieux
@@ -248,7 +248,7 @@ Manager détecte : GET /health timeout ou erreur
 
 ## 📊 Monitoring
 
-### Logs
+### Journaux
 
 ```bash
 tail -f logs/manager.log
@@ -267,7 +267,7 @@ lsof -i:8080
 2. **Produit exemple** : Créer un `billing_service` pour tester
 3. **Lifecycle Service** : Gestion start/stop/restart
 4. **Config Service** : Configuration centralisée
-5. **Observability** : Logs structurés et métriques
+5. **Observability** : Journaux structurés et métriques
 
 ## 📚 Voir aussi
 
@@ -278,4 +278,4 @@ lsof -i:8080
 
 ---
 
-**Le Hub Manager est le cœur du système ! 🎉**
+### Le Hub Manager est le cœur du système ! 🎉

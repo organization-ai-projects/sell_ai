@@ -13,21 +13,21 @@ Le **Hub Registry** est l'annuaire central du Hub System. Il maintient les **map
 
 ### Enregistrement
 
-```
+```plaintext
 Service → Registry:8081/register
 Registry → Stocke { capability: "invoice.create", url: "http://billing:9001" }
 ```
 
 ### Lookup
 
-```
+```plaintext
 Manager → Registry:8081/lookup/invoice.create
 Registry → Retourne { "url": "http://billing:9001" }
 ```
 
 ### Listing
 
-```
+```plaintext
 Manager → Registry:8081/list
 Registry → Retourne { capabilities: ["invoice.create", "payment.process", ...] }
 ```
@@ -50,7 +50,7 @@ Le service écoute sur le port **8081**.
 
 ## 📊 Architecture
 
-```
+```plaintext
 ┌──────────────────────────────┐
 │  Hub Registry (Port 8081)    │
 │                              │
@@ -178,7 +178,7 @@ curl -X POST http://localhost:8081/register \
   }'
 ```
 
-### Lookup
+### Lookup curl
 
 ```bash
 curl http://localhost:8081/lookup/invoice.create
@@ -217,7 +217,7 @@ curl http://localhost:8081/list
 
 ## 📈 Flux typique
 
-```
+```plaintext
 1. Service externe démarre
    ↓
 2. POST /register avec ses capabilities
@@ -323,15 +323,15 @@ cargo test
 
 ### Moyen terme
 
-4. **Replication** : Plusieurs Registry en sync
-5. **Watch** : Notifier Manager des changements
-6. **Metrics** : Compter lookups, registrations
+1. **Replication** : Plusieurs Registry en sync
+2. **Watch** : Notifier Manager des changements
+3. **Metrics** : Compter lookups, registrations
 
 ### Long terme
 
-7. **Clustering** : Haute disponibilité
-8. **API REST** : Documentation OpenAPI
-9. **Cache invalidation** : Smart cache busting
+1. **Clustering** : Haute disponibilité
+2. **API REST** : Documentation OpenAPI
+3. **Cache invalidation** : Smart cache busting
 
 ## 📚 Voir aussi
 
@@ -342,4 +342,4 @@ cargo test
 
 ---
 
-**Le Registry est le cœur de la découverte de services ! 📦**
+### Le Registry est le cœur de la découverte de services ! 📦

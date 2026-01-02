@@ -13,8 +13,8 @@ pub struct Resource {
 impl Resource {
     pub fn assign_tier(&mut self, thresholds: &[usize]) {
         self.tier = match thresholds {
-            [low, high] if self.content.len() < *low => Some("low".to_string()),
-            [low, high] if self.content.len() > *high => Some("high".to_string()),
+            [_, _] if self.content.len() < thresholds[0] => Some("low".to_string()),
+            [_, _] if self.content.len() > thresholds[1] => Some("high".to_string()),
             _ => Some("medium".to_string()),
         };
     }
