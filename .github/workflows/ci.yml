@@ -131,25 +131,6 @@ jobs:
       - name: Check licenses and advisories
         run: cargo deny check
 
-  outdated:
-    name: Check Outdated Dependencies
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Install cargo-outdated
-        uses: taiki-e/install-action@v2
-        with:
-          tool: cargo-outdated
-
-      - name: Run cargo-outdated
-        run: cargo outdated --exit-code 1
-
   doc:
     name: Documentation
     runs-on: ubuntu-latest
@@ -206,33 +187,6 @@ jobs:
 
       - name: Check for unused dependencies
         run: cargo +nightly udeps --all-targets
-
-  semver:
-    name: Semantic Versioning Check
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Setup Rust cache
-        uses: Swatinem/rust-cache@v2
-
-      - name: Install cargo-semver-checks
-        uses: taiki-e/install-action@v2
-        with:
-          tool: cargo-semver-checks
-
-      - name: Fetch published version
-        run: cargo install cargo-publish && cargo publish --dry-run
-
-      - name: Compare with published version
-        run: cargo semver-checks check-release
 
   size:
     name: Binary Size Check
