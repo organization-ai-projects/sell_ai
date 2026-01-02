@@ -60,6 +60,20 @@ pub enum Commands {
         #[arg(long, default_value_t = 2_000_000)]
         max_length: usize,
     },
+    /// Filter resources by tier
+    Filter {
+        /// Input file path
+        #[arg(long)]
+        input: PathBuf,
+
+        /// Output file path
+        #[arg(long)]
+        output: PathBuf,
+
+        /// Tier to filter by (low, medium, high)
+        #[arg(long)]
+        tier: String,
+    },
 }
 
 #[derive(Debug, Clone, Copy, ValueEnum)]

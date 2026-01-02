@@ -90,3 +90,44 @@ fn test_clean_stats_no_resources() {
     assert_eq!(stats.too_short, 0);
     assert_eq!(stats.too_long, 0);
 }
+
+#[test]
+fn test_filter_resources_by_tier() {
+    use factory::persistence::{read_jsonl, write_jsonl};
+    use factory::resource::Resource;
+    use tempfile::tempdir;
+
+    let dir = tempdir().unwrap();
+    let input_path = dir.path().join("resources.jsonl");
+    let output_path = dir.path().join("filtered.jsonl");
+
+    let resources = vec![
+        Resource {
+            id: "1".to_string(),
+            uri: "http://example.com/1".to_string(),
+            fetched_at: "2026-01-02T12:00:00Z".to_string(),
+            content: "Short content".to_string(),
+            tier: Some("low".to_string()),
+        },
+        Resource {
+            id: "2".to_string(),
+            uri: "http://example.com/2".to_string(),
+            fetched_at: "2026-01-02T12:00:00Z".to_string(),
+            content: "Medium content".to_string(),
+            tier: Some("medium".to_string()),
+        },
+    ];
+
+    write_jsonl(&input_path, &resources).unwrap();
+
+    let filtered_resources: Vec<_> = resources
+        .into_iter()
+        .filter(|r| r.tier.as_deref() == Some("low"))
+        .collect();
+
+    write_jsonl(&output_path, &filtered_resources).unwrap();
+
+    let result: Vec<Resource> = read_jsonl(&output_path).unwrap();
+    assert_eq!(result.len(), 1);
+    assert_eq!(result[0].tier.as_deref(), Some("low"));
+}

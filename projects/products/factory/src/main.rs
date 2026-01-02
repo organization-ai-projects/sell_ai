@@ -169,6 +169,20 @@ fn main() -> Result<()> {
             println!("{}", stats);
             println!("Output written to {:?} ({:?})", output, output_format);
         }
+        Commands::Filter {
+            input,
+            output,
+            tier,
+        } => {
+            let resources = read_resources(&input, OutputFormat::Jsonl)?;
+            let filtered_resources: Vec<_> = resources
+                .into_iter()
+                .filter(|r| r.tier.as_deref() == Some(&tier))
+                .collect();
+
+            write_resources(&output, OutputFormat::Jsonl, &filtered_resources)?;
+            println!("Filtered resources written to {:?}", output);
+        }
     }
 
     Ok(())
