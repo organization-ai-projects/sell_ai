@@ -1,0 +1,19 @@
+[package]
+name = "hub_manager"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "hub_manager"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+tokio-util = { version = "0.7" }
+warp = "0.3"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+reqwest = { version = "0.11", features = ["json"] }
+thiserror = "1.0"
+anyhow = "1.0"
+chrono = "0.4"

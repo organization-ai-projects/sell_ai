@@ -1,0 +1,13 @@
+# Ignorer les fichiers sensibles et générés
+*.env
+secrets/
+output.jsonl
+uris.txt
+target/
+**/node_modules/
+.DS_Store
+.idea/
+.vscode/raw.*
+data/samples/
+raw.bincode
+raw.jsonl
