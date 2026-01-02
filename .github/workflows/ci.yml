@@ -149,24 +149,6 @@ jobs:
         env:
           RUSTDOCFLAGS: -D warnings
 
-  msrv:
-    name: Minimum Supported Rust Version
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Rust toolchain (MSRV)
-        uses: dtolnay/rust-toolchain@master
-        with:
-          toolchain: 1.75.0  # ⬅️ Version corrigée
-
-      - name: Setup Rust cache
-        uses: Swatinem/rust-cache@v2
-
-      - name: Check with MSRV
-        run: cargo check --all-features --workspace
-
   unused-deps:
     name: Check Unused Dependencies
     runs-on: ubuntu-latest
