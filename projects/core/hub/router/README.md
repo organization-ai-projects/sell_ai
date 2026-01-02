@@ -117,14 +117,14 @@ GET http://localhost:8082/cache/stats
 
 **Avant (problématique)** :
 
-```
+```plaintext
 Manager → Router → Manager → Registry → Manager → Router (cache update) → Produit
 (4 appels Router!)
 ```
 
 **Après (optimisé)** :
 
-```
+```plaintext
 Manager → Router (inclut capability si lookup needed)
           ↓
     [Cache hit] → Retourne target_url

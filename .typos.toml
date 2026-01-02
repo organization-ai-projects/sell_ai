@@ -1,5 +1,0 @@
-[default]
-extend-ignore-re = ["uuid", "bincode"]
-
-[files]
-extend-exclude = ["target/", "*.lock"]
