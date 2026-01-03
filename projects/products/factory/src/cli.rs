@@ -74,6 +74,24 @@ pub enum Commands {
         #[arg(long)]
         tier: String,
     },
+    /// Enrich resources using AI models
+    Enrich {
+        /// Input file path
+        #[arg(long)]
+        input: PathBuf,
+
+        /// Output file path
+        #[arg(long)]
+        output: PathBuf,
+
+        /// Model to use for enrichment
+        #[arg(long, default_value = "default_model")]
+        model: String,
+
+        /// Batch size for processing
+        #[arg(long, default_value_t = 32)]
+        batch_size: usize,
+    },
 }
 
 #[derive(Debug, Clone, Copy, ValueEnum)]

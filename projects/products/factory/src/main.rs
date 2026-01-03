@@ -183,6 +183,40 @@ fn main() -> Result<()> {
             write_resources(&output, OutputFormat::Jsonl, &filtered_resources)?;
             println!("Filtered resources written to {:?}", output);
         }
+        Commands::Enrich {
+            input,
+            output,
+            model,
+            batch_size,
+        } => {
+            let resources = read_resources(&input, OutputFormat::Jsonl)?;
+
+            println!(
+                "Enriching {} resources using model '{}' with batch size {}...",
+                resources.len(),
+                model,
+                batch_size
+            );
+
+            let enriched_resources: Vec<Resource> = resources
+                .chunks(batch_size)
+                .flat_map(|batch| {
+                    batch.iter().map(|resource| {
+                        // Simulate enrichment logic
+                        let enriched_content =
+                            format!("[Enriched by {}]: {}", model, resource.content);
+
+                        Resource {
+                            content: enriched_content,
+                            ..resource.clone()
+                        }
+                    })
+                })
+                .collect();
+
+            write_resources(&output, OutputFormat::Jsonl, &enriched_resources)?;
+            println!("Enriched resources written to {:?}", output);
+        }
     }
 
     Ok(())

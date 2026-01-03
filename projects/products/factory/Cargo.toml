@@ -13,6 +13,8 @@ bincode = "2.0.1"
 uuid = { version = "1", features = ["v7", "serde"] }
 chrono = { version = "0.4", features = ["serde"] }
 rayon = "1.10"
+burn = "0.19.1"
+burn-tch = "0.19.1"
 
 [dev-dependencies]
 tempfile = "3.5"
