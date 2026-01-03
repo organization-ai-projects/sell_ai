@@ -1,8 +1,5 @@
-use factory::cli::OutputFormat;
 use factory::persistence::{read_jsonl, write_jsonl};
 use factory::resource::Resource;
-use std::fs::File;
-use std::io::Write;
 use std::path::PathBuf;
 
 #[test]

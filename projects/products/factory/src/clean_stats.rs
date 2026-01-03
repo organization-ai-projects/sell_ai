@@ -22,25 +22,25 @@ impl CleanStats {
         }
     }
 
-    pub fn add_kept(&mut self, tier: &str) {
+    // Refactorisation : méthode générique pour ajouter des statistiques
+    pub fn add_stat(&mut self, stat_type: &str, tier: Option<&str>) {
         self.total += 1;
-        self.kept += 1;
-        match tier {
-            "low" => self.low_tier += 1,
-            "medium" => self.medium_tier += 1,
-            "high" => self.high_tier += 1,
+        match stat_type {
+            "kept" => {
+                self.kept += 1;
+                if let Some(tier) = tier {
+                    match tier {
+                        "low" => self.low_tier += 1,
+                        "medium" => self.medium_tier += 1,
+                        "high" => self.high_tier += 1,
+                        _ => (),
+                    }
+                }
+            }
+            "too_short" => self.too_short += 1,
+            "too_long" => self.too_long += 1,
             _ => (),
         }
-    }
-
-    pub fn add_too_short(&mut self) {
-        self.total += 1;
-        self.too_short += 1;
-    }
-
-    pub fn add_too_long(&mut self) {
-        self.total += 1;
-        self.too_long += 1;
     }
 }
 

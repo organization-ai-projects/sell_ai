@@ -8,6 +8,7 @@ use anyhow::Context;
 use bincode::Encode;
 use serde::{Deserialize, Serialize};
 
+//jsonl functions
 pub fn read_jsonl<T: for<'de> Deserialize<'de>>(path: &PathBuf) -> Result<Vec<T>, anyhow::Error> {
     let file = File::open(path).with_context(|| format!("Failed to open input file {:?}", path))?;
     let reader = BufReader::new(file);
@@ -46,6 +47,7 @@ pub fn write_jsonl<T: Serialize>(path: &PathBuf, items: &[T]) -> Result<(), anyh
     Ok(())
 }
 
+//bincode functions
 pub fn write_bincode<T: Encode>(path: &PathBuf, items: &[T]) -> Result<(), anyhow::Error> {
     let file =
         File::create(path).with_context(|| format!("Failed to create output file {:?}", path))?;
